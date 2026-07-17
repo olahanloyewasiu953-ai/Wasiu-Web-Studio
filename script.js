@@ -1,432 +1,327 @@
-/* ===========================
-   SHOPPING CART
-=========================== */
+/*================ LOADER ================*/
 
-let cart = [];
+window.addEventListener("load", () => {
 
-const cartCount = document.getElementById("cart-count");
+    const loader = document.getElementById("loader");
 
-const addButtons = document.querySelectorAll(".add-cart");
+    setTimeout(() => {
 
-addButtons.forEach(button => {
+        loader.style.opacity = "0";
 
-button.addEventListener("click", () => {
+        setTimeout(() => {
 
-const card = button.closest(".food-card");
+            loader.style.display = "none";
 
-const foodName = card.querySelector("h3").textContent;
+        },500);
 
-const foodPrice = card.querySelector(".price").textContent;
 
-cart.push({
-
-name: foodName,
-
-price: foodPrice
+    },1500);
 
 });
 
-cartCount.textContent = cart.length;
 
-button.innerHTML = "✓ Added";
 
-button.style.background = "#28a745";
 
-setTimeout(() => {
 
-button.innerHTML = "Add To Cart";
+/*================ MOBILE MENU ================*/
 
-button.style.background = "#ff6b00";
 
-},1200);
+const menuBtn = document.querySelector(".menu-btn");
 
-});
+const navMenu = document.querySelector(".nav-menu");
 
-});
 
-/* ===========================
-   CART PREVIEW
-=========================== */
 
-const cartIcon = document.querySelector(".cart-icon");
+menuBtn.addEventListener("click", () => {
 
-cartIcon.addEventListener("click", () => {
 
-if(cart.length===0){
+    navMenu.classList.toggle("active");
 
-alert("🛒 Your cart is empty.");
-
-return;
-
-}
-
-let message="🛒 YOUR CART\n\n";
-
-cart.forEach((item,index)=>{
-
-message+=`${index+1}. ${item.name} - ${item.price}\n`;
 
 });
 
-message+=`\nTotal Items: ${cart.length}`;
 
-alert(message);
 
-});
 
-/* ===========================
-   HERO BUTTON
-=========================== */
+/* Close menu when clicking a link */
 
-const heroButton=document.querySelector(".primary-btn");
 
-heroButton.addEventListener("click",()=>{
+document.querySelectorAll(".nav-menu a")
+.forEach(link => {
 
-heroButton.innerHTML="Loading Menu...";
 
-setTimeout(()=>{
+    link.addEventListener("click",()=>{
 
-heroButton.innerHTML="Explore Menu";
+        navMenu.classList.remove("active");
 
-},1200);
+    });
+
 
 });
 
-/* ===========================
-   DARK MODE
-=========================== */
 
-const themeBtn = document.getElementById("theme-btn");
 
-themeBtn.addEventListener("click", () => {
 
-document.body.classList.toggle("dark");
 
-const icon = themeBtn.querySelector("i");
+/*================ CUSTOM CURSOR ================*/
 
-if(document.body.classList.contains("dark")){
 
-icon.classList.remove("fa-moon");
-icon.classList.add("fa-sun");
+const cursor = document.querySelector(".cursor");
 
-}else{
 
-icon.classList.remove("fa-sun");
-icon.classList.add("fa-moon");
 
-}
+document.addEventListener("mousemove",(e)=>{
+
+
+    cursor.style.left = e.clientX + "px";
+
+    cursor.style.top = e.clientY + "px";
+
 
 });
 
-/* ===========================
-   SEARCH FOOD
-=========================== */
 
-const searchBtn = document.getElementById("search-btn");
 
-searchBtn.addEventListener("click", () => {
 
-const keyword = prompt("🔍 Search for a food item:");
 
-if(!keyword) return;
+/*================ BACK TO TOP ================*/
 
-const cards = document.querySelectorAll(".food-card");
 
-let found = false;
+const backTop = document.querySelector(".back-top");
 
-cards.forEach(card => {
 
-const title = card.querySelector("h3").textContent.toLowerCase();
-
-if(title.includes(keyword.toLowerCase())){
-
-card.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-card.style.boxShadow="0 0 30px #ff6b00";
-
-setTimeout(()=>{
-
-card.style.boxShadow="";
-
-},2500);
-
-found = true;
-
-}
-
-});
-
-if(!found){
-
-alert("❌ No matching food found.");
-
-}
-
-});
-
-/* ===========================
-   ACTIVE NAVIGATION
-=========================== */
-
-const navLinks = document.querySelectorAll(".navbar a");
-
-navLinks.forEach(link=>{
-
-link.addEventListener("click",()=>{
-
-navLinks.forEach(item=>item.classList.remove("active"));
-
-link.classList.add("active");
-
-});
-
-});
-
-/* ===========================
-   SCROLL TO TOP
-=========================== */
-
-const topButton=document.createElement("button");
-
-topButton.innerHTML="⬆";
-
-topButton.id="topBtn";
-
-document.body.appendChild(topButton);
-
-topButton.style.position="fixed";
-topButton.style.bottom="25px";
-topButton.style.right="25px";
-topButton.style.width="50px";
-topButton.style.height="50px";
-topButton.style.borderRadius="50%";
-topButton.style.border="none";
-topButton.style.background="#ff6b00";
-topButton.style.color="#fff";
-topButton.style.fontSize="20px";
-topButton.style.cursor="pointer";
-topButton.style.display="none";
-topButton.style.zIndex="999";
 
 window.addEventListener("scroll",()=>{
 
-if(window.scrollY>500){
 
-topButton.style.display="block";
+    if(window.scrollY > 500){
 
-}else{
 
-topButton.style.display="none";
+        backTop.classList.add("active");
 
-}
 
-});
+    }else{
 
-topButton.addEventListener("click",()=>{
 
-window.scrollTo({
+        backTop.classList.remove("active");
 
-top:0,
 
-behavior:"smooth"
+    }
+
 
 });
 
-});
+/*================ SCROLL REVEAL ================*/
 
-/* ===========================
-   WHATSAPP ORDER
-=========================== */
 
-const orderForm = document.getElementById("orderForm");
-
-orderForm.addEventListener("submit", function (e) {
-
-e.preventDefault();
-
-const name = document.getElementById("name").value.trim();
-const phone = document.getElementById("phone").value.trim();
-const address = document.getElementById("address").value.trim();
-const food = document.getElementById("food").value;
-const quantity = document.getElementById("quantity").value;
-const note = document.getElementById("note").value.trim();
-
-if (!name || !phone || !address || !food) {
-    alert("Please complete all required fields.");
-    return;
-}
-
-const message =
-`🍽️ *NEW FOOD ORDER*
-
-👤 Name: ${name}
-
-📞 Phone: ${phone}
-
-📍 Address: ${address}
-
-🍕 Food: ${food}
-
-🔢 Quantity: ${quantity}
-
-📝 Note: ${note || "None"}
-
-Thank you!`;
-
-const whatsappNumber = "2349137412166";
-
-const url =
-`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
-window.open(url, "_blank");
-
-alert("Your order has been prepared for WhatsApp.");
-
-orderForm.reset();
-
-document.getElementById("quantity").value = 1;
-
-});
-
-/* ===========================
-   CART TOTAL & WHATSAPP UPGRADE
-=========================== */
-
-// Update Add to Cart to store numeric prices
-cart = [];
-
-document.querySelectorAll(".add-cart").forEach(button => {
-
-button.addEventListener("click", () => {
-
-const card = button.closest(".food-card");
-
-const name = card.querySelector("h3").textContent;
-
-const priceText = card.querySelector(".price").textContent;
-
-const price = Number(priceText.replace(/[₦,]/g,""));
-
-cart.push({
-name,
-price
-});
-
-cartCount.textContent = cart.length;
-
-});
-
-});
-
-// Show cart summary when cart icon is clicked
-
-cartIcon.addEventListener("click", () => {
-
-if(cart.length===0){
-
-alert("Your cart is empty.");
-
-return;
-
-}
-
-let total = 0;
-
-let summary = "🛒 YOUR CART\n\n";
-
-cart.forEach((item,index)=>{
-
-summary += `${index+1}. ${item.name} - ₦${item.price.toLocaleString()}\n`;
-
-total += item.price;
-
-});
-
-summary += `\n---------------------`;
-
-summary += `\nTotal Items: ${cart.length}`;
-
-summary += `\nTotal Price: ₦${total.toLocaleString()}`;
-
-alert(summary);
-
-});
-
-// Send full cart to WhatsApp
-
-orderForm.addEventListener("submit",function(e){
-
-e.preventDefault();
-
-if(cart.length===0){
-
-alert("Please add food to your cart first.");
-
-return;
-
-}
-
-const name=document.getElementById("name").value;
-const phone=document.getElementById("phone").value;
-const address=document.getElementById("address").value;
-const note=document.getElementById("note").value;
-
-let total=0;
-
-let orderList="";
-
-cart.forEach(item=>{
-
-orderList += `• ${item.name} - ₦${item.price.toLocaleString()}\n`;
-
-total += item.price;
-
-});
-
-const text=`🍴 *NEW ORDER*
-
-👤 Name: ${name}
-
-📞 Phone: ${phone}
-
-📍 Address: ${address}
-
-🛒 Items:
-${orderList}
-
-💰 Total: ₦${total.toLocaleString()}
-
-📝 Note:
-${note || "None"}
-
-Thank you!`;
-
-window.open(
-`https://wa.me/2349137412166?text=${encodeURIComponent(text)}`,
-"_blank"
+const revealElements = document.querySelectorAll(
+    ".section-title, .about-container, .skill-card, .stat-box, .project-card, .service-card, .why-card, .contact-container"
 );
 
-alert("Thank you! Your order has been sent.");
 
-cart=[];
 
-cartCount.textContent="0";
+const revealOnScroll = () => {
 
-orderForm.reset();
 
-document.getElementById("quantity").value=1;
+    revealElements.forEach(element => {
+
+
+        const elementTop = element.getBoundingClientRect().top;
+
+        const screenPosition = window.innerHeight - 100;
+
+
+
+        if(elementTop < screenPosition){
+
+
+            element.classList.add("reveal");
+
+
+            setTimeout(()=>{
+
+                element.classList.add("active");
+
+            },100);
+
+
+        }
+
+
+    });
+
+
+};
+
+
+
+window.addEventListener("scroll", revealOnScroll);
+
+revealOnScroll();
+
+
+
+
+
+/*================ ACTIVE NAVIGATION ================*/
+
+
+const sections = document.querySelectorAll("section");
+
+const navLinks = document.querySelectorAll(".nav-menu a");
+
+
+
+window.addEventListener("scroll",()=>{
+
+
+    let current = "";
+
+
+
+    sections.forEach(section=>{
+
+
+        const sectionTop = section.offsetTop - 150;
+
+        const sectionHeight = section.clientHeight;
+
+
+
+        if(window.scrollY >= sectionTop && 
+           window.scrollY < sectionTop + sectionHeight){
+
+
+            current = section.getAttribute("id");
+
+
+        }
+
+
+    });
+
+
+
+    navLinks.forEach(link=>{
+
+
+        link.classList.remove("active");
+
+
+
+        if(link.getAttribute("href") === "#" + current){
+
+
+            link.classList.add("active");
+
+
+        }
+
+
+    });
+
+
 
 });
 
-/* ===========================
-   PAGE LOADED
-=========================== */
+/*================ CONTACT FORM ================*/
 
-window.addEventListener("load",()=>{
 
-console.log("Elite Bites Restaurant loaded successfully.");
+const contactForm = document.querySelector(".contact-form");
+
+
+
+contactForm.addEventListener("submit",(e)=>{
+
+
+    e.preventDefault();
+
+
+    const button = contactForm.querySelector("button");
+
+
+    button.innerHTML = "Message Sent ✓";
+
+
+    button.style.background = "#00f5ff";
+
+
+    setTimeout(()=>{
+
+
+        button.innerHTML = "Send Message";
+
+
+        button.style.background = "";
+
+
+        contactForm.reset();
+
+
+
+    },3000);
+
+
+
+});
+
+
+
+
+
+/*================ BUTTON HOVER EFFECT ================*/
+
+
+const buttons = document.querySelectorAll(".btn");
+
+
+
+buttons.forEach(button=>{
+
+
+    button.addEventListener("mouseenter",()=>{
+
+
+        button.style.transform="translateY(-5px)";
+
+
+    });
+
+
+
+    button.addEventListener("mouseleave",()=>{
+
+
+        button.style.transform="translateY(0)";
+
+
+    });
+
+
+
+});
+
+
+
+
+
+/*================ IMAGE LOADING EFFECT ================*/
+
+
+const images = document.querySelectorAll("img");
+
+
+
+images.forEach(image=>{
+
+
+    image.addEventListener("load",()=>{
+
+
+        image.style.opacity="1";
+
+
+    });
+
 
 });
